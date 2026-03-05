@@ -1,32 +1,43 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Shopdata } from "../module/shop.model.js";
 
-export const shopdatashow = asyncHandler(async(req , res) => {
-    const {shopcat , location} = req.body
-    console.log(shopcat)
+export const shopdatashow = asyncHandler(async (req, res) => {
 
-    const finddata = await Shopdata.find({shopName:shopcat})
+    const { shopcat, location } = req.body
+
+    const finddata = await Shopdata.find({
+        shopName: { $regex: shopcat, $options: "i" },
+        location: { $regex: location, $options: "i" }
+    })
+
+    if (finddata.length === 0) {
+        return res.status(404).json({
+            success: false,
+            message: "No shops found"
+        })
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Shop found",
+        data: finddata
+    })
+
+})
+
+export const shopfulldetails = asyncHandler(async(req , res) => {
+    const {_id} = req.params
+
+    const finddata = await Shopdata.findById({_id})
     if(!finddata){
         return res.status(401).json({
             success:false,
-            message:"shopcat in needed"
+            message:"data not found"
         })
     }
-    console.log(finddata)
-
-    const findlocation = finddata.includes(location)
-    if(!findlocation){
-        return res.status(401).json({
-            success:false,
-            message:"shopcat in needed"
-        })
-    }
-
     return res.status(201).json({
         success:true,
-        message:"shop finds",
-        findlocation
+        message:"data founded",
+        finddata
     })
-    
-    
 })
