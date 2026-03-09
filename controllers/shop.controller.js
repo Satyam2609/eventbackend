@@ -1,5 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Shopdata } from "../module/shop.model.js";
+import { orderDetailsset } from "../module/orderDetails.model.js";
 
 export const shopdatashow = asyncHandler(async (req, res) => {
 
@@ -41,3 +42,45 @@ export const shopfulldetails = asyncHandler(async(req , res) => {
         finddata
     })
 })
+
+export const orderDetailsdata = asyncHandler(async(req , res) => {
+    const {orderId} = req.body
+
+    const findshop = await Shopdata.findById((orderId))
+    if(!findshop){
+        return res.status(401).json({
+            success:false,
+            message:"shop was not found"
+        })
+    }
+    const createorder = await orderDetailsset.create({
+        orderId:orderId,
+        orderName:findshop.shopName,
+        orderLocation:findshop.location,
+        orderStatus,
+        orderDateAndTime,
+        orderImage:findshop.shopImage
+
+    })
+
+})
+
+export const getorderdetails = asyncHandler(async(req , res) => {
+    const {_id} = req.params
+
+    const findorderdata = await orderDetailsset.findById({_id})
+    if(!findorderdata){
+        return res.status(401).json({
+            success:false,
+            message:"order data not found"
+        })
+    }
+
+    return res.status(201).json({
+        success:false,
+        message:"find successfully",
+        findorderdata
+    })
+
+})
+ 

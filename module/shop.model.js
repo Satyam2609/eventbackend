@@ -30,6 +30,12 @@ const shopData = new mongoose.Schema({
     ],
     shopGallery:[
         {type:String,required:true}
-    ]
+    ],
+    shopPrice:[{
+        shopItems:{
+            type:String,
+            required:true
+        }
+    }]
 })
 export const Shopdata = mongoose.model("Shopdata" , shopData)
