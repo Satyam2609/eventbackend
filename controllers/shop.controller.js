@@ -53,20 +53,21 @@ export const orderDetailsdata = asyncHandler(async(req , res) => {
             message:"shop was not found"
         })
     }
+    console.log(findshop)
     const createorder = await orderDetailsset.create({
-        orderId:orderId,
+        orderId:findshop._id,
         orderName:findshop.shopName,
         orderLocation:findshop.location,
-        orderStatus,
-        orderDateAndTime,
         orderImage:findshop.shopImage
 
     })
+    console.log(createorder)
 
 })
 
 export const getorderdetails = asyncHandler(async(req , res) => {
     const {_id} = req.params
+    console.log(_id)
 
     const findorderdata = await orderDetailsset.findById({_id})
     if(!findorderdata){
@@ -75,6 +76,7 @@ export const getorderdetails = asyncHandler(async(req , res) => {
             message:"order data not found"
         })
     }
+    console.log(findorderdata)
 
     return res.status(201).json({
         success:false,

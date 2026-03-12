@@ -16,10 +16,6 @@ const orderDetails = new mongoose.Schema({
         type:String,
         required:true
     },
-    orderDateAndTime:{
-        type:String,
-        required:true
-    },
     orderStatus:{
         type:String,
         enum:["pending" , "success" , "onProccess"],
