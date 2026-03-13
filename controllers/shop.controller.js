@@ -67,9 +67,10 @@ export const orderDetailsdata = asyncHandler(async(req , res) => {
 
 export const getorderdetails = asyncHandler(async(req , res) => {
     const {_id} = req.params
-    console.log(_id)
+    console.log("skdfnskf",_id)
+    const orderId = _id
 
-    const findorderdata = await orderDetailsset.findById({_id})
+    const findorderdata = await orderDetailsset.findOne({orderId})
     if(!findorderdata){
         return res.status(401).json({
             success:false,
