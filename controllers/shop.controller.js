@@ -86,4 +86,50 @@ export const getorderdetails = asyncHandler(async(req , res) => {
     })
 
 })
+
+export const ordersget = asyncHandler(async(req , res) => {2
+  
+    const findshops = await orderDetailsset.find({})
+    if(!findshops){
+        return res.status(401).json({
+            success:false,
+            message:"Data not found"
+        })
+    }
+
+
+    return res.status(201).json({
+        success:true,
+        message:"data recisived",
+        findshops
+    })
+
+})
+
+export const orderPermission = asyncHandler(async(req , res) => {
+    const {orderId , permission} = req.body
+    console.log(orderId , permission)
+
+    
+
+    const findshops = await orderDetailsset.findById({_id:orderId})
+    console.log(findshops)
+    if(!findshops){
+        return res.status(401).json({
+            success:false,
+            message:"Data not found"
+        })
+    }
+
+    if(permission === "yes"){
+        findshops.orderStatus = "success"
+        await findshops.save()
+    }
+    else{
+        findshops.orderStatus = "pending"
+        await findshops.save()
+    }
+    console.log(findshops)
+
+})
  
