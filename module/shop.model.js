@@ -17,6 +17,9 @@ const shopData = new mongoose.Schema({
         type:String,
         required:true
     },
+    type:{
+        type:String
+    },
     cartsreq:[
         {
             type:String,
@@ -31,11 +34,8 @@ const shopData = new mongoose.Schema({
     shopGallery:[
         {type:String,required:true}
     ],
-    shopPrice:[{
-        shopItems:{
-            type:String,
-            required:true
-        }
-    }]
+price:[
+    {min:String , max:String}
+]
 })
 export const Shopdata = mongoose.model("Shopdata" , shopData)

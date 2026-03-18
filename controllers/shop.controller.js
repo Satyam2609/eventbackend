@@ -5,11 +5,13 @@ import { orderDetailsset } from "../module/orderDetails.model.js";
 export const shopdatashow = asyncHandler(async (req, res) => {
 
     const { shopcat, location } = req.body
+    console.log(shopcat , location)
 
     const finddata = await Shopdata.find({
-        shopName: { $regex: shopcat, $options: "i" },
+        type: { $regex: shopcat, $options: "i" },
         location: { $regex: location, $options: "i" }
     })
+    console.log(finddata)
 
     if (finddata.length === 0) {
         return res.status(404).json({
@@ -29,7 +31,8 @@ export const shopdatashow = asyncHandler(async (req, res) => {
 export const shopfulldetails = asyncHandler(async(req , res) => {
     const {_id} = req.params
 
-    const finddata = await Shopdata.findById({_id})
+    const finddata = await Shopdata.findOne({_id})
+    console.log(finddata)
     if(!finddata){
         return res.status(401).json({
             success:false,
@@ -55,7 +58,7 @@ export const orderDetailsdata = asyncHandler(async(req , res) => {
     }
     console.log(findshop)
     const createorder = await orderDetailsset.create({
-        orderId:findshop._id,
+        orderId:req.user._id,
         orderName:findshop.shopName,
         orderLocation:findshop.location,
         orderImage:findshop.shopImage
@@ -66,7 +69,7 @@ export const orderDetailsdata = asyncHandler(async(req , res) => {
 })
 
 export const getorderdetails = asyncHandler(async(req , res) => {
-    const {_id} = req.params
+    const {_id} = req.user
     console.log("skdfnskf",_id)
     const orderId = _id
 
